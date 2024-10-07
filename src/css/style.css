@@ -1,0 +1,169 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.chat-block {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.chat-users {
+    width: calc(30% - 10px);
+    min-height: 300px;
+    border: 1px solid #000000;
+    margin-right: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    align-self: flex-start;
+}
+
+.chat-window {
+    width: 70%;
+    height: 500px;
+    border: 1px solid #000000;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(90deg, #030a68,#558bd1);
+    border-radius: 10px;
+    position: relative;
+}
+
+.messages {
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 10px 10px rgb(104, 102, 102);
+}
+
+.message {
+    font-size: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: right;
+}
+
+.my-message {
+    align-items: flex-end;
+}
+
+.message-text {
+    border: 1px solid #000000;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.send-user-info {
+    font-size: 0.8em;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #ffffff;
+    background: linear-gradient(to right, #ada996, #f2f2f2, #dbdbdb, #eaeaea);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.message-input {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.message-input input {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+.user {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.user-profile-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #000000;
+    margin-right: 10px;
+}
+
+.user-nickname {
+    align-self: center;
+}
+
+.info-message {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.register-mask form {
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.register-mask .register-text {
+    font-size: 20px;
+}
+
+.nickname-input {
+    width: 200px;
+}
+
+.nickname-input input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.register-submit {
+    width: 30%; 
+    background-color: #3bfa78;
+    border: 1px solid #000000;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.user-count {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.error {
+    border-color: red;
+    background-color: rgb(255, 0, 0, 0.2);
+    color: rgb(255, 0, 0); 
+}
