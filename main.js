@@ -4,6 +4,7 @@
 ;// ./src/js/chat.js
 class Chat {
   constructor() {
+    this.inputForm = document.querySelector('.message-input form');
     this.input = document.querySelector('#message');
     this.messagesBlock = document.querySelector('.messages');
     this.usersBlock = document.querySelector('.chat-users');
@@ -11,8 +12,9 @@ class Chat {
     this.usersCount = document.querySelector('.user-count p span');
   }
   init(ws) {
-    this.input.addEventListener('keyup', e => {
-      if (e.code == 'Enter' && this.input.value != '') {
+    this.inputForm.addEventListener('submit', e => {
+      e.preventDefault();
+      if (this.input.value != '') {
         const message = this.input.value;
         this.input.value = '';
         ws.sendToServer(message);
@@ -23,8 +25,8 @@ class Chat {
     let text = '';
     if (myMsg) {
       text = 'my-message';
+      autor = 'You';
     }
-    console.log(myMsg);
     return `
         <div class="message ${text}">
             <div class="send-user-info">${autor} ${data}</div>
@@ -79,13 +81,14 @@ class Chat {
 }
 ;// ./src/js/wsConnect.js
 class WSConnection {
-  constructor(obj) {
+  constructor(chat) {
     this.ws;
     this.messages = [];
     this.nickName;
-    this.chat = obj;
+    this.chat = chat;
   }
-  connect() {
+  connect(nickName) {
+    this.nickName = nickName;
     this.ws = new WebSocket('wss://websocketserver-n1ek.onrender.com');
     this.ws.addEventListener('open', () => {
       this.ws.send(JSON.stringify({
@@ -96,21 +99,6 @@ class WSConnection {
       }));
     });
     this.getMessage();
-  }
-  async addRegisteration(nickName) {
-    const data = await fetch('https://websocketserver-n1ek.onrender.com/registration', {
-      method: 'POST',
-      body: JSON.stringify({
-        nickName: nickName
-      })
-    }).then(result => result.json());
-    if (data.status != 'OK') {
-      this.showError();
-      return false;
-    }
-    this.nickName = nickName;
-    this.connect();
-    return true;
   }
   getMessage() {
     this.ws.addEventListener('message', message => {
@@ -144,11 +132,12 @@ class WSConnection {
 }
 ;// ./src/js/register.js
 class Registration {
-  constructor(ws) {
+  constructor(ws, chat) {
     this.nickName;
     this.registerBlock = document.querySelector('.register-mask');
     this.btn = this.registerBlock.querySelector('button');
     this.ws = ws;
+    this.chat = chat;
   }
   init() {
     this.btn.addEventListener('click', this.createNewUser.bind(this));
@@ -160,20 +149,34 @@ class Registration {
     if (!text) {
       return;
     }
-    const bool = await this.ws.addRegisteration(text);
+    const bool = await this.addRegisteration(text);
     if (bool) {
       this.registerBlock.remove();
+      this.chat.init(this.ws);
     }
+  }
+  async addRegisteration(nickName) {
+    const data = await fetch('https://websocketserver-n1ek.onrender.com/registration', {
+      method: 'POST',
+      body: JSON.stringify({
+        nickName: nickName
+      })
+    }).then(result => result.json());
+    if (data.status != 'OK') {
+      this.ws.showError();
+      return false;
+    }
+    this.ws.connect(nickName);
+    return true;
   }
 }
 ;// ./src/js/app.js
 
-const obj = new Chat();
+const chat = new Chat();
 
-const ws = new WSConnection(obj);
-obj.init(ws);
+const ws = new WSConnection(chat);
 
-const reg = new Registration(ws);
+const reg = new Registration(ws, chat);
 reg.init();
 ;// ./src/index.js
 
