@@ -1,5 +1,6 @@
 export default class Chat {
   constructor() {
+    this.inputForm = document.querySelector('.message-input form');
     this.input = document.querySelector('#message');
     this.messagesBlock = document.querySelector('.messages');
     this.usersBlock = document.querySelector('.chat-users');
@@ -8,8 +9,9 @@ export default class Chat {
   }
 
   init(ws) {
-    this.input.addEventListener('keyup', (e) => {
-      if (e.code == 'Enter' && this.input.value != '') {
+    this.inputForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+      if (this.input.value != '') {
         const message = this.input.value;
         this.input.value = '';
         ws.sendToServer(message);
@@ -21,8 +23,8 @@ export default class Chat {
     let text = '';
     if (myMsg) {
       text = 'my-message';
+      autor = 'You'
     }
-    console.log(myMsg);
     return `
         <div class="message ${text}">
             <div class="send-user-info">${autor} ${data}</div>

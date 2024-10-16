@@ -1,12 +1,13 @@
 export default class WSConnection {
-  constructor(obj) {
+  constructor(chat) {
     this.ws;
     this.messages = [];
     this.nickName;
-    this.chat = obj;
+    this.chat = chat;
   }
 
-  connect() {
+  connect(nickName) {
+    this.nickName = nickName;
     this.ws = new WebSocket('wss://websocketserver-n1ek.onrender.com');
     this.ws.addEventListener('open', () => {
       this.ws.send(
@@ -19,23 +20,6 @@ export default class WSConnection {
       );
     });
     this.getMessage();
-  }
-
-  async addRegisteration(nickName) {
-    const data = await fetch(
-      'https://websocketserver-n1ek.onrender.com/registration',
-      {
-        method: 'POST',
-        body: JSON.stringify({nickName: nickName}),
-      },
-    ).then((result) => result.json());
-    if (data.status != 'OK') {
-      this.showError();
-      return false;
-    }
-    this.nickName = nickName;
-    this.connect();
-    return true;
   }
 
   getMessage() {

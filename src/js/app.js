@@ -1,9 +1,8 @@
 import Chat from './chat';
-const obj = new Chat();
+const chat = new Chat();
 import WSConnection from './wsConnect';
-const ws = new WSConnection(obj);
-obj.init(ws);
+const ws = new WSConnection(chat);
 import Registration from './register';
-const reg = new Registration(ws);
+const reg = new Registration(ws, chat);
 
 reg.init();
